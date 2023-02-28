@@ -6,11 +6,8 @@ import logging
 from aiogram import Bot
 from aiogram import Dispatcher
 from aiogram.types import BotCommand
-from menu import menu_handler
-from menu import process_callback_query
-from module1 import help_handler
-from module1 import start_handler
-from module2 import message_handler
+from base_handlers import register_base_handlers
+from menu import register_menu
 from settings import ADMIN_ID
 from settings import TOKEN
 
@@ -21,16 +18,9 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
-# Register handlers from modules
-dp.register_message_handler(start_handler, commands=['start'])
-dp.register_message_handler(help_handler, commands=['help'])
-dp.register_message_handler(menu_handler, commands=['menu'])
-dp.register_callback_query_handler(
-        process_callback_query,
-        lambda c: c.data == 'tests',
-    )
-
-dp.register_message_handler(message_handler)
+# Register handlers
+register_base_handlers(dp)
+register_menu(dp)
 
 
 async def set_default_commands(dp):
