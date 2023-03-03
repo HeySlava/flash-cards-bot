@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import datetime as dt
+from typing import List
 
 import sqlalchemy as sa
 from const import States
 from data.basemodel import Base
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship
 # import uuid
 
 
@@ -27,6 +29,8 @@ class Set(Base):
             sa.DateTime,
             default=dt.datetime.utcnow,
         )
+    user_id: Mapped[int] = mapped_column(sa.ForeignKey('users.id'))
+    user: Mapped['User'] = relationship(back_populates='sets')
 
 
 class Card(Base):
@@ -60,4 +64,8 @@ class User(Base):
     udate: Mapped[dt.datetime] = mapped_column(
             sa.DateTime,
             default=dt.datetime.utcnow,
+        )
+
+    sets: Mapped[List['Set']] = relationship(
+            back_populates='user',
         )
