@@ -23,6 +23,9 @@ async def process_sets(c: CallbackQuery):
 
 async def new_set(c: CallbackQuery):
     global CURRENT_STATE
+    await c.bot.answer_callback_query(
+            c.id,
+            text='Введи имя нового сета')
     await c.message.answer(
             'Введи имя нового сета',
         )
