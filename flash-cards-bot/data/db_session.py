@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import sqlalchemy as sa
+from alembic import command
+from alembic.config import Config
 from sqlalchemy import orm
 from sqlalchemy.orm import sessionmaker
 
@@ -22,6 +24,9 @@ def global_init(
     engine = sa.create_engine(conn_str, echo=debug)
 
     _factory = sessionmaker(engine)
+
+    alembic_cfg = Config('alembic.ini')
+    command.upgrade(alembic_cfg, 'head')
 
 
 def create_session() -> orm.Session:
