@@ -28,7 +28,7 @@ async def process_callback_query(c: CallbackQuery):
 def register(dp):
     dp.register_message_handler(start_handler, commands=Commands.START.value)
     dp.register_message_handler(help_handler, commands=Commands.HELP.value)
-    dp.register_callback_query_handler(
-            process_callback_query,
-            lambda c: c.data,
-        )
+    # dp.register_callback_query_handler(
+    #         process_callback_query,
+    #         lambda c: c.data,
+    #     )

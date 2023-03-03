@@ -12,6 +12,7 @@ def init_user(
         user_id: int,
 ) -> User:
     session: Session = db_session.create_session()
+
     user = session.query(User).where(User.id == user_id).one_or_none()
     if not user:
         user = User(id=user_id)
@@ -26,10 +27,18 @@ def update_state(
         state: States,
 ) -> User:
     session: Session = db_session.create_session()
-    user = session.query(User).where(User.id == user_id).one()
 
-    user.state = state
+    user = session.query(User).where(User.id == user_id).one()
+    user.state = state.value
     user.udate = dt.datetime.utcnow()
     session.add(user)
     session.commit()
     return user
+
+
+def get_user_by_id(
+        user_id: int,
+) -> User:
+    session: Session = db_session.create_session()
+
+    return session.query(User).where(User.id == user_id).one()

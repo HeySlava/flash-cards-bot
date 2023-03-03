@@ -26,3 +26,4 @@ class Commands(str, Enum):
 
 class States(str, Enum):
     INPUT_SET_NAME = 'Введи номер сета'
+    DEFAULT = ''

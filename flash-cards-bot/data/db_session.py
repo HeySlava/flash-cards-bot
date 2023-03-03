@@ -21,7 +21,13 @@ def global_init(
     if not conn_str or not conn_str.strip():
         raise ValueError(f'Wrong conn_str ({conn_str=})')
 
-    engine = sa.create_engine(conn_str, echo=debug)
+    engine = sa.create_engine(
+            conn_str,
+            echo=debug,
+            connect_args={
+                'check_same_thread': False,
+            }
+        )
 
     _factory = sessionmaker(engine)
 

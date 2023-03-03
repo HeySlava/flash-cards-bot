@@ -2,15 +2,14 @@ from __future__ import annotations
 
 from aiogram.types import CallbackQuery
 from aiogram.types import Message
-from const import CURRENT_STATE
 from const import Markups
 from const import MenuButtons
 from const import SetButtons
 from const import States
 from decorators import ANSWER_TO_MARKUP
-
-
-list_sets = []
+from services import set_service
+from services import user_service
+from sqlalchemy.exc import IntegrityError
 
 
 async def process_sets(c: CallbackQuery):
@@ -22,28 +21,31 @@ async def process_sets(c: CallbackQuery):
 
 
 async def new_set(c: CallbackQuery):
-    global CURRENT_STATE
     await c.bot.answer_callback_query(
             c.id,
             text='Введи имя нового сета')
     await c.message.answer(
             'Введи имя нового сета',
         )
-    print('before', CURRENT_STATE)
-    CURRENT_STATE = States.INPUT_SET_NAME
-    print('after', CURRENT_STATE)
+    user_service.update_state(
+            user_id=c.from_user.id,
+            state=States.INPUT_SET_NAME,
+        )
 
 
 async def process_new_set(m: Message):
-    global CURRENT_STATE
-    list_sets.append(m.text)
+    try:
+        set_ = set_service.new_set(name=m.text, user_id=m.from_user.id)
+        text = f'сет добавлен {set_.name=}'
+    except IntegrityError:
+        text = 'Конфликт'
 
-    await m.answer(
-            f'Your set name is {m.text}\n\n{str(list_sets)}',
+    await m.answer(text)
+
+    user_service.update_state(
+            user_id=m.from_user.id,
+            state=States.DEFAULT,
         )
-    print('before', CURRENT_STATE)
-    CURRENT_STATE = None
-    print('after', CURRENT_STATE)
 
 
 def register(dp):
@@ -57,5 +59,8 @@ def register(dp):
         )
     dp.register_message_handler(
             process_new_set,
-            lambda _: CURRENT_STATE == States.INPUT_SET_NAME
+            lambda m: (
+                user_service.get_user_by_id(
+                    m.from_user.id).state == States.INPUT_SET_NAME,
+            )
         )
