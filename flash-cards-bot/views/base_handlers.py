@@ -1,16 +1,19 @@
 from __future__ import annotations
 
-from aiogram import types
 from aiogram.types import CallbackQuery
+from aiogram.types import Message
 from const import Commands
+from services import user_service
 
 
-async def start_handler(message: types.Message):
-    await message.answer('Hi, I\'m a bot. How can I help you?')
+async def start_handler(m: Message):
+    user_service.init_user(user_id=m.from_user.id)
+    await m.answer('Hi, I\'m a bot. How can I help you?')
 
 
-async def help_handler(message: types.Message):
-    await message.answer('This is a help message.')
+async def help_handler(m: Message):
+    user_service.init_user(user_id=m.from_user.id)
+    await m.answer('This is a help message.')
 
 
 async def process_callback_query(c: CallbackQuery):
