@@ -14,8 +14,9 @@ with open('.env') as f:
         env_dict[key] = value
 
 
-_BASE_DIR = Path(__file__)
+_BASE_DIR = Path(__file__).parent
 _DB_DIR = _BASE_DIR / 'db'
+_DB_DIR.mkdir(parents=True, exist_ok=True)
 _conn_str = 'sqlite:///' + (_DB_DIR / 'flash.sqlite').as_posix()
 
 

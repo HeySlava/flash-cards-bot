@@ -3,7 +3,9 @@ from __future__ import annotations
 from logging.config import fileConfig
 
 from alembic import context
+from data import models  # noqa: F401
 from data.basemodel import Base
+from settings import settings
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
@@ -26,6 +28,8 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+conn_str = settings.conn_str
+config.set_main_option('conn_str', settings.conn_str)
 
 
 def run_migrations_offline() -> None:
