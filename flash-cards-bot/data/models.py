@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import uuid
 from typing import List
 
 import sqlalchemy as sa
@@ -9,18 +10,16 @@ from data.basemodel import Base
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
-# import uuid
 
 
 class Set(Base):
     __tablename__ = 'sets'
 
-    # # Try to use name as primary_key
-    # id: Mapped[str] = mapped_column(
-    #         primary_key=True,
-    #         default=lambda: str(uuid.uuid4()).replace('-', ''),
-    #     )
-    name: Mapped[str] = mapped_column(primary_key=True)
+    id: Mapped[str] = mapped_column(
+            primary_key=True,
+            default=lambda: str(uuid.uuid4()).replace('-', ''),
+        )
+    name: Mapped[str] = mapped_column(unique=True)
     cdate: Mapped[dt.datetime] = mapped_column(
             sa.DateTime,
             default=dt.datetime.utcnow,
