@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime as dt
+from typing import Optional
 
 from const import States
 from data.models import User
@@ -40,3 +41,15 @@ def get_user_by_id(
         session: Session,
 ) -> User:
     return session.query(User).where(User.id == user_id).one()
+
+
+def change_current_set(
+        user_id: int,
+        set_id: Optional[str],
+        session: Session,
+) -> User:
+    user = session.query(User).where(User.id == user_id).one()
+    user.current_set = set_id
+    session.add(user)
+    session.commit()
+    return user
