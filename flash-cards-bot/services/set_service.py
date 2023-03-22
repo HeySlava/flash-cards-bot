@@ -13,3 +13,10 @@ def new_set(
     session.add(set_)
     session.commit()
     return set_
+
+
+def get_set_by_uuid(
+        set_id: str,
+        session: Session,
+) -> Set:
+    return session.query(Set).where(Set.id == set_id).one()
