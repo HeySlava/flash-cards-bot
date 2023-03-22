@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime as dt
 import uuid
 from typing import List
+from typing import Optional
 
 import sqlalchemy as sa
 from const import States
@@ -67,7 +68,7 @@ class User(Base):
             sa.DateTime,
             default=dt.datetime.utcnow,
         )
-    current_set: Mapped[str] = mapped_column(nullable=True)
+    current_set: Mapped[Optional[str]] = mapped_column(nullable=True)
     sets: Mapped[List['Set']] = relationship(
             back_populates='user',
         )
