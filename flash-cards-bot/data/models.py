@@ -30,6 +30,7 @@ class Set(Base):
         )
     user_id: Mapped[int] = mapped_column(sa.ForeignKey('users.id'))
     user: Mapped['User'] = relationship(back_populates='sets')
+    cards: Mapped[List['Card']] = relationship(back_populates='set_')
 
 
 class Card(Base):
@@ -47,6 +48,8 @@ class Card(Base):
             sa.DateTime,
             default=dt.datetime.utcnow,
         )
+    set_id: Mapped[int] = mapped_column(sa.ForeignKey('sets.id'))
+    set_: Mapped['Set'] = relationship(back_populates='cards')
 
 
 class User(Base):
