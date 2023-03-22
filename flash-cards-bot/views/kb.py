@@ -59,7 +59,7 @@ def existed_set_markup(set_: Set) -> InlineKeyboardMarkup:
 
     delete_set = InlineKeyboardButton(
             'Удалить',
-            callback_data=set_.name,
+            callback_data=f'delete_set:{set_.id}',
         )
 
     add_new_word = InlineKeyboardButton(
