@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
+from enum import IntEnum
 
 
 class MenuButtons(str, Enum):
@@ -9,9 +10,14 @@ class MenuButtons(str, Enum):
     INPUT_TESTS = 'Тесты с вводом'
 
 
+class MenuLevels(IntEnum):
+    GREETING = 0
+
+
 class Markups(str, Enum):
     MENU = 'menu'
     SET = 'set'
+    WORK_WITH_SET = 'Process my set'
 
 
 class SetButtons(str, Enum):
@@ -26,4 +32,4 @@ class Commands(str, Enum):
 
 class States(str, Enum):
     INPUT_SET_NAME = 'Введи номер сета'
-    DEFAULT = ''
+    DEFAULT = None
