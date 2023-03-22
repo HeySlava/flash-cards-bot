@@ -67,7 +67,7 @@ class User(Base):
             sa.DateTime,
             default=dt.datetime.utcnow,
         )
-
+    current_set: Mapped[str] = mapped_column(nullable=True)
     sets: Mapped[List['Set']] = relationship(
             back_populates='user',
         )
