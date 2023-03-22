@@ -35,3 +35,12 @@ def get_set_by_uuid(
         session: Session,
 ) -> Set:
     return session.query(Set).where(Set.id == set_id).one()
+
+
+def delete_set(
+        set_id: str,
+        session: Session,
+) -> None:
+    set_ = session.query(Set).where(Set.id == set_id).one()
+    session.delete(set_)
+    session.commit()

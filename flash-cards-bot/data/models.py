@@ -31,7 +31,10 @@ class Set(Base):
         )
     user_id: Mapped[int] = mapped_column(sa.ForeignKey('users.id'))
     user: Mapped['User'] = relationship(back_populates='sets')
-    cards: Mapped[List['Card']] = relationship(back_populates='set_')
+    cards: Mapped[List['Card']] = relationship(
+            back_populates='set_',
+            cascade='all, delete',
+        )
 
 
 class Card(Base):
