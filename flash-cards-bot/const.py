@@ -22,6 +22,7 @@ class Markups(str, Enum):
 
 class SetButtons(str, Enum):
     NEW_SET = 'Создать новый сет'
+    CHANGE_SET_NAME = 'Введи новое имя сета'
 
 
 class Commands(str, Enum):
@@ -32,4 +33,5 @@ class Commands(str, Enum):
 
 class States(str, Enum):
     INPUT_SET_NAME = 'Введи номер сета'
+    RENAME_SET = 'Изменить название сета'
     DEFAULT = None
