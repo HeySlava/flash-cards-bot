@@ -4,13 +4,13 @@ import logging
 
 from aiogram.types import InlineKeyboardButton
 from aiogram.types import InlineKeyboardMarkup
+from const import Commands
 from const import Markups
 from const import MenuButtons
 from const import SetButtons
-from data import db_session
 from data.models import Set
+from data.models import User
 from decorators import register_markup
-from services import user_service
 
 
 logger = logging.getLogger(__name__)
@@ -25,14 +25,8 @@ def menu_markup() -> InlineKeyboardMarkup:
 
 
 @register_markup(kw=Markups.SET)
-def set_markup(user_id: int) -> InlineKeyboardMarkup:
-    logger.debug(f'Message {user_id=}')
-    session = db_session.create_session()
-
-    user = user_service.get_user_by_id(
-            user_id=user_id,
-            session=session,
-        )
+def set_markup(user: User) -> InlineKeyboardMarkup:
+    logger.debug(f'Build SET markup for {user.id}')
 
     keyboard = InlineKeyboardMarkup()
 
@@ -44,10 +38,16 @@ def set_markup(user_id: int) -> InlineKeyboardMarkup:
 
     for s in user.sets:
         current = InlineKeyboardButton(
-                f'{s.name=}',
+                s.name,
                 callback_data=f'set:{s.id}',
             )
         keyboard.row(current)
+
+    back = InlineKeyboardButton(
+            'Назад',
+            callback_data=Commands.MENU,
+        )
+    keyboard.row(back)
     return keyboard
 
 
@@ -62,9 +62,14 @@ def existed_set_markup(set_: Set) -> InlineKeyboardMarkup:
             callback_data=f'delete_set:{set_.id}',
         )
 
-    add_new_word = InlineKeyboardButton(
-            'Добавить новое слово',
-            callback_data=set_.name,
+    # add_new_word = InlineKeyboardButton(
+    #         'Добавить новое слово',
+    #         callback_data=set_.name,
+    #     )
+
+    back = InlineKeyboardButton(
+            'Назад',
+            callback_data=MenuButtons.WORK_WITH_SETS,
         )
 
     rename_set_name = InlineKeyboardButton(
@@ -72,7 +77,7 @@ def existed_set_markup(set_: Set) -> InlineKeyboardMarkup:
             callback_data=f'rename_set:{set_.id}',
         )
     keyboard.row(delete_set)
-    keyboard.row(add_new_word)
+    # keyboard.row(add_new_word)
     keyboard.row(rename_set_name)
 
     for c in set_.cards:
@@ -81,4 +86,7 @@ def existed_set_markup(set_: Set) -> InlineKeyboardMarkup:
                 callback_data=c.id,
             )
         keyboard.row(current)
+
+    keyboard.row(back)
+
     return keyboard

@@ -6,8 +6,8 @@ from enum import IntEnum
 
 class MenuButtons(str, Enum):
     WORK_WITH_SETS = 'Работа с сетами'
-    TESTS = 'Тесты'
-    INPUT_TESTS = 'Тесты с вводом'
+    # TESTS = 'Тесты'
+    # INPUT_TESTS = 'Тесты с вводом'
 
 
 class MenuLevels(IntEnum):

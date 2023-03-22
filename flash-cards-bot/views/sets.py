@@ -14,13 +14,17 @@ from decorators import ANSWER_TO_MARKUP
 from services import set_service
 from services import user_service
 from sqlalchemy.exc import IntegrityError
+from views.menu import menu_handler
 
 
 logger = logging.getLogger(__name__)
 
 
 async def process_sets(c: CallbackQuery):
-    reply_markup = ANSWER_TO_MARKUP[Markups.SET](c.from_user.id)
+    session = db_session.create_session()
+
+    user = user_service.get_user_by_id(c.from_user.id, session=session)
+    reply_markup = ANSWER_TO_MARKUP[Markups.SET](user)
     await c.answer()
 
     await c.message.answer(
@@ -100,6 +104,7 @@ async def process_input_text(m: Message):
             state=States.DEFAULT,
             session=session,
         )
+    await menu_handler(m)
 
 
 async def select_set(c: CallbackQuery):
