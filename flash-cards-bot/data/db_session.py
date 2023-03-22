@@ -33,6 +33,7 @@ def global_init(
 
     alembic_cfg = Config('alembic.ini')
     command.upgrade(alembic_cfg, 'head')
+    alembic_cfg.attributes['configure_logger'] = False
 
 
 def create_session() -> orm.Session:
