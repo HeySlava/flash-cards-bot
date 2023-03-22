@@ -7,7 +7,6 @@ from decorators import ANSWER_TO_MARKUP
 from views import kb  # noqa: F401
 
 
-# Define the command handler
 async def menu_handler(message: Message):
     reply_markup = ANSWER_TO_MARKUP[Markups.MENU]()
 
@@ -18,4 +17,7 @@ async def menu_handler(message: Message):
 
 
 def register(dp):
-    dp.register_message_handler(menu_handler, commands=Commands.MENU.value)
+    dp.register_message_handler(
+            menu_handler,
+            commands=Commands.MENU.value,
+        )
